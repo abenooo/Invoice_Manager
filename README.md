@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Invoice Manager
 
-## Getting Started
+Invoice Manager is a full-stack web application designed to manage invoices efficiently. This application allows users to create, view, update, and delete invoices. Each invoice includes details such as the invoice number, client information, itemized list of products/services, total amount, and due date. The project utilizes the Next.js, Nest.js, PostgreSQL, and Prisma stack.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Create, view, update, and delete invoices
+- Export invoices as PDF files
+- Export balance sheet reports as Excel files
+- Responsive design for desktop and mobile devices
+- Secure authentication for user management
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js
+- **Backend**: Node.js
+- **Database**: PostgreSQL
+- **ORM**: Prisma
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project Setup
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js (v14 or above)
+- PostgreSQL
+- Git
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. **Clone the repository**
 
-## Deploy on Vercel
+    ```bash
+    git clone https://github.com/abenooo/invoice-manager.git
+    cd invoice-manager
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Install dependencies**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    ```bash
+    cd frontend
+    npm install
+
+    cd ../backend
+    npm install
+    ```
+
+3. **Setup PostgreSQL Database**
+
+    - Ensure PostgreSQL is installed and running.
+    - Create a new database, for example, `invoice_manager`.
+    - Update the database connection string in the `.env` file in the backend directory.
+
+    ```env
+    DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/invoice_manager
+    ```
+
+4. **Run Database Migrations**
+
+    ```bash
+    cd backend
+    npx prisma migrate dev --name init
+    ```
+
+### Running the Application
+
+1. **Start the backend server**
+
+    ```bash
+    cd backend
+    npm run start
+    ```
+
+2. **Start the frontend server**
+
+    ```bash
+    cd frontend
+    npm run dev
+    ```
+
+### Accessing the Application
+
+- The frontend can be accessed at `http://localhost:3000`
+- The backend API can be accessed at `http://localhost:4000`
+
+### Export Functionality
+
+- PDF export: Navigate to an invoice detail page and click on the "Export as PDF" button.
+- Excel export: Navigate to the invoices page and click on the "Export as Excel" button.
+
+## Deployment
+
+To deploy the application we will use Vercel
+
+1. **Frontend Deployment**:
+
+    - Push your frontend code to a repository.
+    - Deploy using Vercel.
+
+2. **Backend Deployment**:
+
+    - Push your backend code to a repository.
+    - Deploy using Heroku or any other preferred platform.
+    - Ensure the PostgreSQL database is also set up on the cloud platform.
+
+3. **Update Environment Variables**:
+
+    - Ensure all environment variables are correctly set up on the deployment platform.
+
+## Additional Information
+
+- This project follows best practices for frontend and backend development.
+- Input validation and error handling are implemented.
+- Authentication is handled securely to manage user access.
+
+## Contributing
+
+Feel free to fork this repository and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
+
+
+## Contact
+
+For any questions or suggestions, please contact [abenezerkifle000@gmail.com]
