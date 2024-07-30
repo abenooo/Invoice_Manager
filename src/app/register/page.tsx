@@ -19,8 +19,8 @@ export default function Component() {
         </div>
         <div className="p-6 space-y-4">
           <div className="text-center">
-            <h1 className="text-3xl font-bold">Welcome back!</h1>
-            <p className="text-muted-foreground">Sign in to your account</p>
+            <h1 className="text-3xl font-bold">Welcome</h1>
+            <p className="text-muted-foreground">Sign up new account</p>
           </div>
           <form className="space-y-4">
             <div>
