@@ -1,10 +1,21 @@
-
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+"use client"
+import { useState, useEffect } from 'react';
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Component() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
+
   return (
     <div className="flex items-center justify-center min-h-[100dvh] bg-background">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg md:h-[500px] md:grid md:grid-cols-2 md:gap-8">
@@ -53,10 +64,10 @@ export default function Component() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function EyeIcon(props:any) {
+function EyeIcon(props: any) {
   return (
     <svg
       {...props}
@@ -73,11 +84,10 @@ function EyeIcon(props:any) {
       <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
-  )
+  );
 }
 
-
-function XIcon(props:any) {
+function XIcon(props: any) {
   return (
     <svg
       {...props}
@@ -94,5 +104,5 @@ function XIcon(props:any) {
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </svg>
-  )
+  );
 }
