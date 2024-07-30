@@ -40,13 +40,13 @@ export default function RootLayout({
         <header className="flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2" prefetch={false}>
             <img
-              src="/placeholder.svg"
-              alt="Acme Inc"
+              src="/image.png"
+              alt="Lepton Games"
               width={32}
               height={32}
               className="h-8 w-8"
             />
-            <span className="text-lg font-semibold">Acme Inc</span>
+            <span className="text-lg font-semibold">Lepton Games</span>
           </Link>
           <nav className="flex items-center gap-4 md:hidden">
             <Button variant="ghost" size="icon" className="rounded-full">
