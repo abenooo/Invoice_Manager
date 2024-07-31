@@ -37,7 +37,7 @@ export default function RootLayout({
         <meta name="description" content={pageDescription} />
       </Head>
       <body className={inter.className}>
-        <header className="flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
+        <header className="flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6 container">
           <Link href="/" className="flex items-center gap-2" prefetch={false}>
             <img
               src="/image.png"
