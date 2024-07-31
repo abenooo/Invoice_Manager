@@ -56,7 +56,7 @@ export default function Component() {
             </div>
           </form>
           <div className="text-center text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apost have an account?{" "}
             <Link href="/register" className="font-medium hover:underline" prefetch={false}>
               Sign up
             </Link>
