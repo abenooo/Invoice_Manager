@@ -1,4 +1,6 @@
 # Invoice Manager
+![image](https://github.com/user-attachments/assets/19d001ac-e111-4a04-9a16-1091ed177265)
+
 
 Invoice Manager is a full-stack web application designed to manage invoices efficiently. This application allows users to create, view, update, and delete invoices. Each invoice includes details such as the invoice number, client information, itemized list of products/services, total amount, and due date. The project utilizes the Next.js, Nest.js, PostgreSQL, and Prisma stack.
 
