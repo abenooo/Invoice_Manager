@@ -1,4 +1,5 @@
-"use client";
+"use client"
+import Skeleton from "../Skeleton/Loading"
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import {
@@ -7,11 +8,13 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Terminal } from "lucide-react";
 
 type LineItem = {
   description: string;
   quantity: number;
-  unitPrice: number; 
+  unitPrice: number;
 };
 
 type Invoice = {
@@ -30,21 +33,56 @@ const TAX_RATE = 0.1;
 
 export default function Component() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
         const response = await fetch('/api/invoices');
         const data = await response.json();
-        console.log("Data", data); // Make sure this log is correct
+        console.log("Data", data);
         setInvoices(data);
       } catch (error) {
         console.error('Failed to fetch invoices:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchInvoices();
   }, []);
+
+  const deleteInvoice = async (id: string) => {
+    try {
+      const response = await fetch('/api/invoices', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        setInvoices(invoices.filter((invoice) => invoice.id !== id));
+        <Alert>
+  <Terminal className="h-4 w-4" />
+  <AlertTitle>Heads up!</AlertTitle>
+  <AlertDescription>
+    Deleted invoice successfully
+  </AlertDescription>
+</Alert>
+
+      } else {
+        console.error('Failed to delete invoice');
+      }
+    } catch (error) {
+      console.error('Failed to delete invoice:', error);
+    }
+  };
+
+  if (loading) {
+    return <Skeleton />;
+  }
 
   return (
     <div className="container py-8 space-y-8">
@@ -94,7 +132,7 @@ export default function Component() {
                                   console.log("Item", item); // Log the item to debug
                                   return (
                                     <li key={index} className="mb-1">
-                                      <span className="font-semibold">{item.description}</span>: {item.quantity ?? 0} x ${item.unitPrice ? item.unitPrice.toFixed(2) : '0.00'} 
+                                      <span className="font-semibold">{item.description}</span>: {item.quantity ?? 0} x ${item.unitPrice ? item.unitPrice.toFixed(2) : '0.00'}
                                     </li>
                                   );
                                 })}
@@ -108,7 +146,12 @@ export default function Component() {
                               </div>
                               <div className="flex space-x-2">
                                 <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">Edit</button>
-                                <button className="px-4 py-2 bg-red-500 text-white rounded-lg">Delete</button>
+                                <button 
+                                  onClick={() => deleteInvoice(invoice.id)}
+                                  className="px-4 py-2 bg-red-500 text-white rounded-lg"
+                                >
+                                  Delete
+                                </button>
                               </div>
                             </div>
                           </div>
