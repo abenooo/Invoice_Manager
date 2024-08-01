@@ -11,7 +11,7 @@ import {
 type LineItem = {
   description: string;
   quantity: number;
-  price: number;
+  unitPrice: number; 
 };
 
 type Invoice = {
@@ -23,7 +23,7 @@ type Invoice = {
 };
 
 const calculateSubtotal = (lineItems: LineItem[]): number => {
-  return lineItems.reduce((sum, item) => sum + (item.quantity * (item.price ?? 0)), 0);
+  return lineItems.reduce((sum, item) => sum + (item.quantity * (item.unitPrice ?? 0)), 0);
 };
 
 const TAX_RATE = 0.1;
@@ -90,11 +90,14 @@ export default function Component() {
                             <div className="p-4">
                               <h3 className="font-semibold mb-2">Line Items</h3>
                               <ul className="list-disc list-inside">
-                                {invoice.items.map((item, index) => (
-                                  <li key={index} className="mb-1">
-                                    <span className="font-semibold">{item.description}</span>: {item.quantity} x ${item.price ? item.price.toFixed(2) : '0.00'}
-                                  </li>
-                                ))}
+                                {invoice.items.map((item, index) => {
+                                  console.log("Item", item); // Log the item to debug
+                                  return (
+                                    <li key={index} className="mb-1">
+                                      <span className="font-semibold">{item.description}</span>: {item.quantity ?? 0} x ${item.unitPrice ? item.unitPrice.toFixed(2) : '0.00'} 
+                                    </li>
+                                  );
+                                })}
                               </ul>
                             </div>
                             <div className="p-4 bg-gray-100 border-t flex justify-between items-center rounded-b-lg">
