@@ -7,8 +7,15 @@ import "./globals.css";
 import { Button } from "@/components/ui/button";
 import Head from "next/head";
 import { metadata } from "./metadata";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface User {
+  email: string;
+  userId: number;
+}
 
 export default function RootLayout({
   children,
@@ -16,12 +23,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [pathname, setPathname] = useState("");
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setPathname(window.location.pathname);
+      const loggedInUser = JSON.parse(localStorage.getItem("user") || "null") as User | null;
+      setUser(loggedInUser);
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    toast.success("Logged out successfully");
+  };
 
   const pageTitle =
     typeof metadata.title === "string" ? metadata.title : "Default Title";
@@ -62,31 +78,48 @@ export default function RootLayout({
             >
               Home
             </Link>
-            <Link
-              href="/invoices"
-              className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              prefetch={false}
-            >
-              Invoices
-            </Link>
-            {pathname !== "/login" && (
+            {user && (
               <Link
-                href="/login"
+                href="/invoices"
                 className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
-                Login
+                Invoices
               </Link>
+            )}
+            {user ? (
+              <>
+                <span className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium">
+                  {user.email}
+                </span>
+                <Button
+                  onClick={handleLogout}
+                  className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium bg-red-500 text-white"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              pathname !== "/login" && (
+                <Link
+                  href="/login"
+                  className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  prefetch={false}
+                >
+                  Login
+                </Link>
+              )
             )}
           </div>
         </header>
         <main>{children}</main>
+        <ToastContainer />
       </body>
     </html>
   );
 }
 
-function MenuIcon(props: any) {
+function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -106,4 +139,3 @@ function MenuIcon(props: any) {
     </svg>
   );
 }
-
