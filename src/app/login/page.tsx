@@ -1,20 +1,84 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import * as Yup from 'yup';
 
-export default function Component() {
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email address').required('Required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Required'),
+});
+
+export default function LoginComponent() {
   const [isClient, setIsClient] = useState(false);
+  const [formValues, setFormValues] = useState<FormValues>({
+    email: '',
+    password: '',
+  });
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({
+    email: '',
+    password: '',
+  });
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormValues({ ...formValues, [id]: value });
+    setFormErrors({ ...formErrors, [id]: '' });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await validationSchema.validate(formValues, { abortEarly: false });
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formValues.email, password: formValues.password }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        localStorage.setItem("user", JSON.stringify({ email: result.email, userId: result.userId }));
+        toast.success("Login successful");
+        setTimeout(() => {
+          window.location.href = "/invoices";
+        }, 2000);
+      } else {
+        const result = await response.json();
+        toast.error(result.error);
+      }
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors: { [key: string]: string } = {};
+        err.inner.forEach(error => {
+          if (error.path) {
+            errors[error.path] = error.message;
+          }
+        });
+        setFormErrors(errors);
+      }
+    }
+  };
+
   if (!isClient) {
-    return null; // or a loading spinner
+    return null;
   }
+
 
   return (
     <div className="flex items-center justify-center min-h-[100dvh] bg-background">
@@ -33,18 +97,33 @@ export default function Component() {
             <h1 className="text-3xl font-bold">Welcome back!</h1>
             <p className="text-muted-foreground">Sign in to your account</p>
           </div>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="example@email.com" required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="example@email.com" 
+                value={formValues.email}
+                onChange={handleChange}
+                required 
+              />
+              {formErrors.email && <div className="text-red-500 text-sm">{formErrors.email}</div>}
             </div>
             <div className="relative">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input 
+                id="password" 
+                type="password"
+                value={formValues.password}
+                onChange={handleChange}
+                required 
+              />
               <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 h-7 w-7">
                 <EyeIcon className="h-4 w-4" />
                 <span className="sr-only">Toggle password visibility</span>
               </Button>
+              {formErrors.password && <div className="text-red-500 text-sm">{formErrors.password}</div>}
             </div>
             <Button type="submit" className="w-full">
               Sign In
@@ -63,6 +142,7 @@ export default function Component() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
