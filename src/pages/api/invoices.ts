@@ -1,5 +1,5 @@
-import prisma from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../../lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = req.body.userId || req.query.userId;
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           dueDate: new Date(dueDate),
           totalAmount,
           userId: parseInt(userId as string, 10),
-          items: `Item ${items}`, // Update to use a string for simplicity
+          items: items, // Assuming items is already a string
         },
       });
 
@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           clientPhone,
           dueDate: new Date(dueDate),
           totalAmount,
-          items: `Item ${items}`, // Update to use a string for simplicity
+          items: items, // Assuming items is already a string
         },
       });
       res.status(200).json(updatedInvoice);
