@@ -8,13 +8,6 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 
-model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  password String
-  invoices Invoice[]
-}
-
 model Invoice {
   id            Int      @id @default(autoincrement())
   invoiceNumber String   @unique
@@ -26,7 +19,15 @@ model Invoice {
   updatedAt     DateTime @updatedAt
   dueDate       DateTime
   totalAmount   Float
-  items         String
+  items         String   // Ensure items is defined as a string
   userId        Int
   user          User     @relation(fields: [userId], references: [id])
 }
+
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  password String
+  invoices Invoice[]
+}
+
