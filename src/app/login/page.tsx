@@ -138,7 +138,7 @@ export default function LoginComponent() {
             </div>
           </form>
           <div className="text-center text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" className="font-medium hover:underline" prefetch={false}>
               Sign up
             </Link>
