@@ -43,7 +43,7 @@ export default function RootLayout({
     setUser(null);
     toast.success("Logged out successfully");
     setTimeout(() => {
-      window.location.href = "/login";  // Redirect to login page
+      window.location.href = "/login"; // Redirect to login page
     }, 1000);
   };
 
@@ -87,11 +87,7 @@ export default function RootLayout({
               <span className="sr-only">Toggle navigation</span>
             </Button>
           </nav>
-          <div
-            className={`md:flex items-center gap-4 ${
-              menuOpen ? "block" : "hidden"
-            }`}
-          >
+          <div className="hidden md:flex items-center gap-4">
             {user ? (
               <>
                 <Link
@@ -130,6 +126,49 @@ export default function RootLayout({
               )
             )}
           </div>
+          {menuOpen && (
+            <div className="absolute top-16 left-0 w-full bg-background z-10 md:hidden">
+              <div className="flex flex-col items-center gap-4 p-4">
+                {user ? (
+                  <>
+                    <Link
+                      href="/"
+                      className="w-full inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Home
+                    </Link>
+                    <Link
+                      href="/invoices"
+                      className="w-full inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Invoices
+                    </Link>
+                    <span className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium">
+                      {user.email}
+                    </span>
+                    <Button
+                      onClick={handleLogout}
+                      className="w-full inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium bg-red-500 text-white"
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  pathname !== "/login" && (
+                    <Link
+                      href="/login"
+                      className="w-full inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Login
+                    </Link>
+                  )
+                )}
+              </div>
+            </div>
+          )}
         </header>
         <main>{children}</main>
         <ToastContainer />
