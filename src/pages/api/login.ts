@@ -1,8 +1,11 @@
 import prisma from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
+import cors, { runMiddleware } from '../../../lib/cors';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  await runMiddleware(req, res, cors);
+
   if (req.method === 'POST') {
     const { email, password } = req.body;
 
@@ -24,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Include the userId in the response
       res.status(200).json({ email: user.email, userId: user.id });
     } catch (error) {
-      res.status(500).json({ error: 'Login failed' });
+      res.status(500).json({ error: 'Login failed', details: (error as Error).message });
     }
   } else {
     res.status(405).json({ error: 'Method not allowed' });
