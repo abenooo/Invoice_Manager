@@ -90,9 +90,7 @@ Invoice Manager is a full-stack web application designed to manage invoices effi
 - Excel export: Navigate to the invoices page and click on the "Export as Excel" button.
 
 ## Deployment
-
 To deploy the application we will use Vercel
-
 1. **Frontend Deployment**:
 
     - Push your frontend code to a repository.
