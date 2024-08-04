@@ -27,18 +27,18 @@ export default function Home() {
                 </p>
                 <div className="flex gap-4">
                   <Link
-                    href="/invoices"
+                    href="/login"
                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
-                    View Invoices
+                    Login to Create Invoices
                   </Link>
                   <Link
-                    href="#"
+                    href="/register"
                     className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-6 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
-                    Export Invoices
+                   Create account to Create Invoices
                   </Link>
                 </div>
               </div>

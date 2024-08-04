@@ -1,3 +1,5 @@
+// src/app/layout.tsx
+
 "use client";
 
 import { Inter } from "next/font/google";
@@ -8,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import Head from "next/head";
 import { metadata } from "./metadata";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +26,14 @@ export default function RootLayout({
 }>) {
   const [pathname, setPathname] = useState("");
   const [user, setUser] = useState<User | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setPathname(window.location.pathname);
-      const loggedInUser = JSON.parse(localStorage.getItem("user") || "null") as User | null;
+      const loggedInUser = JSON.parse(
+        localStorage.getItem("user") || "null"
+      ) as User | null;
       setUser(loggedInUser);
     }
   }, []);
@@ -37,6 +42,13 @@ export default function RootLayout({
     localStorage.removeItem("user");
     setUser(null);
     toast.success("Logged out successfully");
+    setTimeout(() => {
+      window.location.href = "/login";  // Redirect to login page
+    }, 1000);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   const pageTitle =
@@ -64,31 +76,38 @@ export default function RootLayout({
             />
             <span className="text-lg font-semibold">Lepton Games</span>
           </Link>
-          <nav className="flex items-center gap-4 md:hidden">
-            <Button variant="ghost" size="icon" className="rounded-full">
+          <nav className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={toggleMenu}
+            >
               <MenuIcon className="h-6 w-6" />
               <span className="sr-only">Toggle navigation</span>
             </Button>
           </nav>
-          <div className="hidden md:flex items-center gap-4">
-            <Link
-              href="/"
-              className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              prefetch={false}
-            >
-              Home
-            </Link>
-            {user && (
-              <Link
-                href="/invoices"
-                className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                prefetch={false}
-              >
-                Invoices
-              </Link>
-            )}
+          <div
+            className={`md:flex items-center gap-4 ${
+              menuOpen ? "block" : "hidden"
+            }`}
+          >
             {user ? (
               <>
+                <Link
+                  href="/"
+                  className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  prefetch={false}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/invoices"
+                  className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  prefetch={false}
+                >
+                  Invoices
+                </Link>
                 <span className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium">
                   {user.email}
                 </span>
