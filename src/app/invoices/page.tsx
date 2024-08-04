@@ -25,6 +25,9 @@ import {
 } from "@/components/ui/select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx"; // Correctly import XLSX
 import Skeleton from "../Skeleton/Loading";
 
 interface Invoice {
@@ -169,6 +172,26 @@ export default function InvoicesComponent() {
     }
   };
 
+  const exportInvoiceToPDF = (invoice: Invoice) => {
+    const doc = new jsPDF();
+    doc.text("Invoice", 14, 16);
+    autoTable(doc, {
+      startY: 20,
+      head: [["Client Name", "Client Email", "Client Address", "Client Phone", "Due Date", "Total Amount", "Items"]],
+      body: [
+        [invoice.clientName, invoice.clientEmail, invoice.clientAddress, invoice.clientPhone, format(new Date(invoice.dueDate), "MMMM dd, yyyy"), invoice.totalAmount.toString(), invoice.items],
+      ],
+    });
+    doc.save(`invoice_${invoice.id}.pdf`);
+  };
+
+  const exportInvoicesToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(invoices);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+    XLSX.writeFile(workbook, "invoices.xlsx");
+  };
+
   return (
     <div className="container py-8 space-y-8">
       <h1 className="text-2xl font-bold mb-4">Invoices</h1>
@@ -177,6 +200,12 @@ export default function InvoicesComponent() {
         onClick={() => setIsCreating(true)}
       >
         Create New Invoice
+      </Button>
+      <Button
+        className="mb-4 bg-blue-500 text-white mx-5"
+        onClick={exportInvoicesToExcel}
+      >
+        Export Invoices to Excel
       </Button>
       <div className="overflow-x-auto">
         {isLoading ? (
@@ -192,6 +221,7 @@ export default function InvoicesComponent() {
                   Total Amount
                 </th>
                 <th className="py-3 px-4 font-semibold text-left">Details</th>
+                <th className="py-3 px-4 font-semibold text-left">Export</th>
               </tr>
             </thead>
             <tbody>
@@ -266,6 +296,14 @@ export default function InvoicesComponent() {
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
+                    </td>
+                    <td className="py-3 px-4">
+                      <Button
+                        className="bg-green-500 text-white"
+                        onClick={() => exportInvoiceToPDF(invoice)}
+                      >
+                        Export to PDF
+                      </Button>
                     </td>
                   </tr>
                 ))}
