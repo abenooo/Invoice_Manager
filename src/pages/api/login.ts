@@ -1,3 +1,4 @@
+// login.ts
 import prisma from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
@@ -24,7 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ error: 'Invalid password' });
       }
 
-      // Include the userId in the response
       res.status(200).json({ email: user.email, userId: user.id });
     } catch (error) {
       res.status(500).json({ error: 'Login failed', details: (error as Error).message });
