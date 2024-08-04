@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
+import Image from 'next/image'; // Import the Image component from next/image
 
 interface FormValues {
   email: string;
@@ -83,7 +84,7 @@ export default function LoginComponent() {
     <div className="flex items-center justify-center min-h-[100dvh] bg-background">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg md:h-[500px] md:grid md:grid-cols-2 md:gap-8">
         <div className="hidden md:block">
-          <img
+          <Image
             src="https://media.istockphoto.com/id/1281150061/vector/register-account-submit-access-login-password-username-internet-online-website-concept.jpg?s=2048x2048&w=is&k=20&c=_yhJ8HvUCQo9VxRUNxdVduv815OfzyEXx4pnMfUUNzI="
             width={600}
             height={500}
@@ -134,7 +135,7 @@ export default function LoginComponent() {
             </div>
           </form>
           <div className="text-center text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" className="font-medium hover:underline" prefetch={false}>
               Sign up
             </Link>
