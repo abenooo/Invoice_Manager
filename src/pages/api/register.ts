@@ -1,3 +1,4 @@
+// pages/api/register.ts
 import prisma from "../../../lib/prisma";
 import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -27,7 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(201).json({ email: newUser.email, userId: newUser.id });
   } catch (error) {
-    // Explicitly type the error as `any` or `Error`
     const err = error as Error;
     res.status(500).json({ error: "Failed to register", details: err.message });
   }
