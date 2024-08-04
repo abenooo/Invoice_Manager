@@ -1,12 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Skeleton from "../Skeleton/Loading";
@@ -36,18 +52,20 @@ export default function InvoicesComponent() {
   const [currentInvoice, setCurrentInvoice] = useState<Invoice | null>(null);
   const [newInvoice, setNewInvoice] = useState<Invoice>({
     id: 0,
-    clientName: '',
-    clientEmail: '',
-    clientAddress: '',
-    clientPhone: '',
-    dueDate: '',
+    clientName: "",
+    clientEmail: "",
+    clientAddress: "",
+    clientPhone: "",
+    dueDate: "",
     totalAmount: 0,
-    items: '1'
+    items: "1",
   });
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user") || "null") as User | null;
+    const loggedInUser = JSON.parse(
+      localStorage.getItem("user") || "null"
+    ) as User | null;
     setUser(loggedInUser);
 
     if (loggedInUser && loggedInUser.userId) {
@@ -71,30 +89,22 @@ export default function InvoicesComponent() {
   };
 
   const deleteInvoice = async (id: number) => {
-    if (!user || !user.userId) {
-      toast.error("User ID is missing. Please log in again.");
-      return;
-    }
-
     try {
       const response = await fetch(`/api/invoices`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, userId: user.userId }), // Include userId in the request body
+        body: JSON.stringify({ id }),
       });
       if (response.ok) {
         setInvoices((prev) => prev.filter((invoice) => invoice.id !== id));
         setIsDeleting(false);
-        toast.success("Invoice deleted successfully!");
       } else {
         console.error("Failed to delete invoice");
-        toast.error("Failed to delete invoice");
       }
     } catch (error) {
       console.error("Failed to delete invoice:", error);
-      toast.error("Failed to delete invoice");
     }
   };
 
@@ -154,7 +164,12 @@ export default function InvoicesComponent() {
   return (
     <div className="container py-8 space-y-8">
       <h1 className="text-2xl font-bold mb-4">Invoices</h1>
-      <Button className="mb-4 bg-green-500 text-white" onClick={() => setIsCreating(true)}>Create New Invoice</Button>
+      <Button
+        className="mb-4 bg-green-500 text-white"
+        onClick={() => setIsCreating(true)}
+      >
+        Create New Invoice
+      </Button>
       <div className="overflow-x-auto">
         {isLoading ? (
           <Skeleton />
@@ -165,73 +180,87 @@ export default function InvoicesComponent() {
                 <th className="py-3 px-4 font-semibold text-left">Invoice #</th>
                 <th className="py-3 px-4 font-semibold text-left">Client</th>
                 <th className="py-3 px-4 font-semibold text-left">Due Date</th>
-                <th className="py-3 px-4 font-semibold text-left">Total Amount</th>
+                <th className="py-3 px-4 font-semibold text-left">
+                  Total Amount
+                </th>
                 <th className="py-3 px-4 font-semibold text-left">Details</th>
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(invoices) && invoices.map((invoice) => (
-                <tr key={invoice.id} className="border-t hover:bg-gray-50">
-                  <td className="py-3 px-4">{invoice.id}</td>
-                  <td className="py-3 px-4">{invoice.clientName}</td>
-                  <td className="py-3 px-4">{format(new Date(invoice.dueDate), "MMMM dd, yyyy")}</td>
-                  <td className="py-3 px-4">${invoice.totalAmount.toFixed(2)}</td>
-                  <td className="py-3 px-4">
-                    <Accordion type="single" collapsible>
-                      <AccordionItem value={invoice.id.toString()}>
-                        <AccordionTrigger className="text-blue-500 underline cursor-pointer">
-                          View Details
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="w-full bg-white border rounded-lg shadow p-4 mt-2">
-                            <div className="bg-purple-500 p-4 rounded-t-lg">
-                              <h2 className="text-lg font-bold text-white">
-                                Invoice {invoice.id}
-                              </h2>
-                              <p className="text-white">
-                                Client: {invoice.clientName}
-                              </p>
-                              <p className="text-white">
-                                Due Date:{" "}
-                                {format(new Date(invoice.dueDate), "MMMM dd, yyyy")}
-                              </p>
-                            </div>
-                            <div className="p-4">
-                              <h3 className="font-semibold mb-2">Selected Item</h3>
-                              <p>Item: {invoice.items}</p>
-                            </div>
-                            <div className="p-4 bg-gray-100 border-t flex justify-between items-center rounded-b-lg">
-                              <div>
-                                <p className="font-bold">Total: ${invoice.totalAmount.toFixed(2)}</p>
+              {Array.isArray(invoices) &&
+                invoices.map((invoice) => (
+                  <tr key={invoice.id} className="border-t hover:bg-gray-50">
+                    <td className="py-3 px-4">{invoice.id}</td>
+                    <td className="py-3 px-4">{invoice.clientName}</td>
+                    <td className="py-3 px-4">
+                      {format(new Date(invoice.dueDate), "MMMM dd, yyyy")}
+                    </td>
+                    <td className="py-3 px-4">
+                      ${invoice.totalAmount.toFixed(2)}
+                    </td>
+                    <td className="py-3 px-4">
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value={invoice.id.toString()}>
+                          <AccordionTrigger className="text-blue-500 underline cursor-pointer">
+                            View Details
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="w-full bg-white border rounded-lg shadow p-4 mt-2">
+                              <div className="bg-purple-500 p-4 rounded-t-lg">
+                                <h2 className="text-lg font-bold text-white">
+                                  Invoice {invoice.id}
+                                </h2>
+                                <p className="text-white">
+                                  Client: {invoice.clientName}
+                                </p>
+                                <p className="text-white">
+                                  Due Date:{" "}
+                                  {format(
+                                    new Date(invoice.dueDate),
+                                    "MMMM dd, yyyy"
+                                  )}
+                                </p>
                               </div>
-                              <div className="flex space-x-2">
-                                <Button
-                                  className="bg-blue-500 text-white"
-                                  onClick={() => {
-                                    setIsEditing(true);
-                                    setCurrentInvoice(invoice);
-                                  }}
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  className="bg-red-500 text-white"
-                                  onClick={() => {
-                                    setIsDeleting(true);
-                                    setCurrentInvoice(invoice);
-                                  }}
-                                >
-                                  Delete
-                                </Button>
+                              <div className="p-4">
+                                <h3 className="font-semibold mb-2">
+                                  Selected Item
+                                </h3>
+                                <p>Item: {invoice.items}</p>
+                              </div>
+                              <div className="p-4 bg-gray-100 border-t flex justify-between items-center rounded-b-lg">
+                                <div>
+                                  <p className="font-bold">
+                                    Total: ${invoice.totalAmount.toFixed(2)}
+                                  </p>
+                                </div>
+                                <div className="flex space-x-2">
+                                  <Button
+                                    className="bg-blue-500 text-white"
+                                    onClick={() => {
+                                      setIsEditing(true);
+                                      setCurrentInvoice(invoice);
+                                    }}
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    className="bg-red-500 text-white"
+                                    onClick={() => {
+                                      setIsDeleting(true);
+                                      setCurrentInvoice(invoice);
+                                    }}
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </td>
-                </tr>
-              ))}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         )}
@@ -346,9 +375,7 @@ export default function InvoicesComponent() {
                 }
                 required
               >
-                <SelectTrigger>
-                  Select Item
-                </SelectTrigger>
+                <SelectTrigger>Select Item</SelectTrigger>
                 <SelectContent>
                   {[1, 2, 3, 4, 5].map((item) => (
                     <SelectItem key={item} value={item.toString()}>
@@ -483,9 +510,7 @@ export default function InvoicesComponent() {
                 }
                 required
               >
-                <SelectTrigger>
-                  Select Item
-                </SelectTrigger>
+                <SelectTrigger>Select Item</SelectTrigger>
                 <SelectContent>
                   {[1, 2, 3, 4, 5].map((item) => (
                     <SelectItem key={item} value={item.toString()}>
@@ -516,8 +541,8 @@ export default function InvoicesComponent() {
           <DialogContent>
             <DialogTitle>Delete Invoice</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this invoice? This action cannot be
-              undone.
+              Are you sure you want to delete this invoice? This action cannot
+              be undone.
             </DialogDescription>
             <DialogFooter>
               <Button
