@@ -132,9 +132,6 @@ export default function LoginComponent() {
               {isLoading ? "Loading..." : "Sign In"}
             </Button>
             <div className="text-center text-muted-foreground">
-              <Link href="#" className="font-medium hover:underline" prefetch={false}>
-                Forgot your password?
-              </Link>
             </div>
           </form>
           <div className="text-center text-muted-foreground">
