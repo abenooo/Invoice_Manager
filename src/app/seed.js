@@ -2,7 +2,6 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  // Deleting existing data in reverse order due to foreign key constraints
   try {
     await prisma.invoice.deleteMany({});
     await prisma.user.deleteMany({});
@@ -12,7 +11,6 @@ async function main() {
 
   console.log('Deleted all existing records.');
 
-  // Seeding Users
   for (let i = 1; i <= 5; i++) {
     await prisma.user.create({
       data: {
@@ -24,7 +22,6 @@ async function main() {
 
   const users = await prisma.user.findMany();
 
-  // Seeding Invoices
   for (let i = 1; i <= 5; i++) {
     await prisma.invoice.create({
       data: {
@@ -37,7 +34,7 @@ async function main() {
         updatedAt: new Date(),
         dueDate: new Date(new Date().setDate(new Date().getDate() + 30)),
         totalAmount: 100.00 * i,
-        items: `${i}`, // Storing the selected item from the dropdown (1 to 5)
+        items: `${i}`,
         userId: users[i % users.length].id,
       },
     });

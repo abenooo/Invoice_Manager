@@ -19,7 +19,7 @@ model Invoice {
   updatedAt     DateTime @updatedAt
   dueDate       DateTime
   totalAmount   Float
-  items         String   // Ensure items is defined as a string
+  items         String
   userId        Int
   user          User     @relation(fields: [userId], references: [id])
 }
@@ -30,4 +30,3 @@ model User {
   password String
   invoices Invoice[]
 }
-

@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = req.body.userId || req.query.userId;
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      const invoiceNumber = `INV-${Date.now()}`; // Generate a unique invoice number
+      const invoiceNumber = `INV-${Date.now()}`;
 
       const newInvoice = await prisma.invoice.create({
         data: {
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           dueDate: new Date(dueDate),
           totalAmount,
           userId: parseInt(userId as string, 10),
-          items: items, // Assuming items is already a string
+          items: `Item ${items}`,
         },
       });
 
@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           clientPhone,
           dueDate: new Date(dueDate),
           totalAmount,
-          items: items, // Assuming items is already a string
+          items: `Item ${items}`,
         },
       });
       res.status(200).json(updatedInvoice);
