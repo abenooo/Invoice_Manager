@@ -25,22 +25,23 @@ export default function Home() {
                   desktop and mobile devices, ensuring a consistent and
                   user-friendly experience no matter how you access it.
                 </p>
-                <div className="flex gap-4">
-                  <Link
-                    href="/login"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Login to Create Invoices
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-6 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                   Create account to Create Invoices
-                  </Link>
-                </div>
+                <div className="flex flex-col gap-4 md:flex-row">
+  <Link
+    href="/login"
+    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 w-full md:w-auto"
+    prefetch={false}
+  >
+    Login to Create Invoices
+  </Link>
+  <Link
+    href="/register"
+    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-6 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 w-full md:w-auto"
+    prefetch={false}
+  >
+    Create account to Create Invoices
+  </Link>
+</div>
+
               </div>
             </div>
           </div>
