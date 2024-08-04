@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export default function Component() {
+export default function RegisterComponent() {
   const [isClient, setIsClient] = useState(false);
   const [formValues, setFormValues] = useState({
     email: '',
@@ -52,8 +52,6 @@ export default function Component() {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        localStorage.setItem('user', JSON.stringify({ id: result.userId, email: result.email }));
         toast.success("Registration successful");
         setTimeout(() => {
           window.location.href = "/login";

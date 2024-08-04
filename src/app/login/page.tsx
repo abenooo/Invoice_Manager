@@ -79,7 +79,6 @@ export default function LoginComponent() {
     return null;
   }
 
-
   return (
     <div className="flex items-center justify-center min-h-[100dvh] bg-background">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg md:h-[500px] md:grid md:grid-cols-2 md:gap-8">
@@ -135,7 +134,7 @@ export default function LoginComponent() {
             </div>
           </form>
           <div className="text-center text-muted-foreground">
-            Don&apost have an account?{" "}
+            Don't have an account?{" "}
             <Link href="/register" className="font-medium hover:underline" prefetch={false}>
               Sign up
             </Link>
