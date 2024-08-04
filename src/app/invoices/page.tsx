@@ -195,18 +195,21 @@ export default function InvoicesComponent() {
   return (
     <div className="container py-8 space-y-8">
       <h1 className="text-2xl font-bold mb-4">Invoices</h1>
-      <Button
-        className="mb-4 bg-green-500 text-white"
-        onClick={() => setIsCreating(true)}
-      >
-        Create New Invoice
-      </Button>
-      <Button
-        className="mb-4 bg-blue-500 text-white mx-5"
-        onClick={exportInvoicesToExcel}
-      >
-        Export Invoices to Excel
-      </Button>
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
+  <Button
+    className="bg-green-500 text-white w-full md:w-auto"
+    onClick={() => setIsCreating(true)}
+  >
+    Create New Invoice
+  </Button>
+  <Button
+    className="bg-blue-500 text-white w-full md:w-auto"
+    onClick={exportInvoicesToExcel}
+  >
+    Export Invoices to Excel
+  </Button>
+</div>
+
       <div className="overflow-x-auto">
         {isLoading ? (
           <Skeleton />
