@@ -89,22 +89,30 @@ export default function InvoicesComponent() {
   };
 
   const deleteInvoice = async (id: number) => {
+    if (!user || !user.userId) {
+      toast.error("User ID is missing. Please log in again.");
+      return;
+    }
+
     try {
       const response = await fetch(`/api/invoices`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id, userId: user.userId }),
       });
       if (response.ok) {
         setInvoices((prev) => prev.filter((invoice) => invoice.id !== id));
         setIsDeleting(false);
+        toast.success("Invoice deleted successfully!");
       } else {
-        console.error("Failed to delete invoice");
+        const result = await response.json();
+        toast.error(result.error || "Failed to delete invoice");
       }
     } catch (error) {
       console.error("Failed to delete invoice:", error);
+      toast.error("Failed to delete invoice");
     }
   };
 

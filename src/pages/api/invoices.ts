@@ -47,6 +47,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === 'PUT') {
     const { id, clientName, clientEmail, clientAddress, clientPhone, dueDate, totalAmount, items } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: 'Invoice ID is required' });
+    }
+
     try {
       const updatedInvoice = await prisma.invoice.update({
         where: { id: parseInt(id as string, 10) },
@@ -66,6 +71,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === 'DELETE') {
     const { id } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: 'Invoice ID is required' });
+    }
+
     try {
       await prisma.invoice.delete({
         where: { id: parseInt(id as string, 10) },
