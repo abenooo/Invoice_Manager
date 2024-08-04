@@ -28,6 +28,7 @@ export default function LoginComponent() {
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -41,6 +42,7 @@ export default function LoginComponent() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await validationSchema.validate(formValues, { abortEarly: false });
       const response = await fetch('/api/login', {
@@ -72,6 +74,8 @@ export default function LoginComponent() {
         });
         setFormErrors(errors);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -124,8 +128,8 @@ export default function LoginComponent() {
               </Button>
               {formErrors.password && <div className="text-red-500 text-sm">{formErrors.password}</div>}
             </div>
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Sign In"}
             </Button>
             <div className="text-center text-muted-foreground">
               <Link href="#" className="font-medium hover:underline" prefetch={false}>
@@ -134,7 +138,7 @@ export default function LoginComponent() {
             </div>
           </form>
           <div className="text-center text-muted-foreground">
-            Don	&apos;t have an account?{" "}
+            Don't have an account?{" "}
             <Link href="/register" className="font-medium hover:underline" prefetch={false}>
               Sign up
             </Link>

@@ -28,6 +28,7 @@ export default function RegisterComponent() {
     password: '',
     confirmPassword: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -41,6 +42,7 @@ export default function RegisterComponent() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await validationSchema.validate(formValues, { abortEarly: false });
       const response = await fetch('/api/register', {
@@ -68,6 +70,8 @@ export default function RegisterComponent() {
         });
         setFormErrors(errors);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -135,8 +139,8 @@ export default function RegisterComponent() {
               </Button>
               {formErrors.confirmPassword && <div className="text-red-500 text-sm">{formErrors.confirmPassword}</div>}
             </div>
-            <Button type="submit" className="w-full">
-              Sign Up
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Sign Up"}
             </Button>
             <div className="text-center text-muted-foreground">
               <Link href="/login" className="font-medium hover:underline" prefetch={false}>
